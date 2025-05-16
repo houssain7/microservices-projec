@@ -1,0 +1,77 @@
+type Product {
+  id: ID!
+  name: String
+  description: String
+  stock: Int
+  price: Float
+}
+
+type ProductDetail {
+  productId: ID!
+  quantity: Int!
+}
+
+type Commande {
+  id: ID!
+  products: [ProductDetail]!
+  price: Float!
+}
+
+type ProductListResponse {
+  page: Int
+  limit: Int
+  total: Int
+  totalPage: Int
+  search: String
+  products: [Product!]
+}
+
+type CommandeListResponse {
+  page: Int
+  limit: Int
+  total: Int
+  totalPage: Int
+  commandes: [Commande!]
+}
+
+input ProductInput {
+  name: String!
+  description: String!
+  stock: Int!
+  price: Float!
+}
+
+input ProductUpdateInput {
+  name: String
+  description: String
+  stock: Int
+  price: Float
+}
+
+input ProductDetailInput {
+  productId: ID!
+  quantity: Int!
+}
+
+input CommandeInput {
+  products: [ProductDetailInput]!
+}
+
+type Query {
+  getProduct(id: ID!): Product
+  getProductList(page: Int, limit: Int, search: String): ProductListResponse
+  getCommande(id: ID!): Commande
+  getCommandeList(page: Int, limit: Int): CommandeListResponse
+}
+
+type Mutation {
+  # product mutations
+  createProduct(input: ProductInput!): Product
+  updateProduct(id: ID!, input: ProductUpdateInput!): Product
+  deleteProduct(id: ID!): Boolean
+
+  # commande mutations
+  createCommande(input: CommandeInput!): Commande
+  updateCommande(id: ID!, input: CommandeInput!): Commande
+  deleteCommande(id: ID!): Boolean
+}

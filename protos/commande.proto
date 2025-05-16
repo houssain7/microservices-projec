@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+service CommandeService {
+  // Get a commande by ID
+  rpc getCommande (GetCommandeRequest) returns (GetCommandeResponse) {}
+  
+  // Get multiple commandes with pagination
+  rpc getCommandes (GetCommandesRequest) returns (GetCommandesResponse) {}
+  
+  // Create a new commande
+  rpc createCommande (CreateCommandeRequest) returns (CreateCommandeResponse) {}
+  
+  // Update a commande
+  rpc updateCommande (UpdateCommandeRequest) returns (UpdateCommandeResponse) {}
+  
+  // Delete a commande
+  rpc deleteCommande (DeleteCommandeRequest) returns (DeleteCommandeResponse) {}
+}
+
+// ProductDetail message - used within Commande
+message ProductDetail {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+// Commande message definition
+message Commande {
+  string id = 1;
+  repeated ProductDetail products = 2;
+  double price = 3;
+}
+
+// Request to get a commande by ID
+message GetCommandeRequest {
+  string id = 1;
+}
+
+// Response with a commande
+message GetCommandeResponse {
+  Commande commande = 1;
+}
+
+// Request to get multiple commandes
+message GetCommandesRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+// Response with multiple commandes and pagination info
+message GetCommandesResponse {
+  int32 page = 1;
+  int32 limit = 2;
+  int32 total = 3;
+  int32 totalPage = 4;
+  repeated Commande commandes = 5;
+}
+
+// ProductDetailInput for creating/updating commandes
+message ProductDetailInput {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+// Request to create a new commande
+message CreateCommandeRequest {
+  message CommandeInput {
+    repeated ProductDetailInput products = 1;
+  }
+  CommandeInput commande = 1;
+}
+
+// Response after creating a commande
+message CreateCommandeResponse {
+  Commande commande = 1;
+}
+
+// Request to update a commande
+message UpdateCommandeRequest {
+  string id = 1;
+  message CommandeInput {
+    repeated ProductDetailInput products = 1;
+  }
+  CommandeInput commande = 2;
+}
+
+// Response after updating a commande
+message UpdateCommandeResponse {
+  Commande commande = 1;
+}
+
+// Request to delete a commande
+message DeleteCommandeRequest {
+  string id = 1;
+}
+
+// Response after deleting a commande
+message DeleteCommandeResponse {
+  bool success = 1;
+}
